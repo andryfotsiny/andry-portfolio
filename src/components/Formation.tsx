@@ -1,62 +1,115 @@
 'use client';
 import { motion } from 'framer-motion';
-import { GraduationCap, Award, BookOpen } from 'lucide-react';
+import { GraduationCap, Award, BookOpen, Loader2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+
+interface Formation {
+    id: string;
+    periode: string;
+    titre: string;
+    ecole: string;
+    icon: string;
+    description?: string;
+    order: number;
+}
+
+interface Certification {
+    id: string;
+    date: string;
+    titre: string;
+    organisme: string;
+    icon: string;
+    order: number;
+}
+
+// Mapping des icônes
+const iconMap: { [key: string]: any } = {
+    GraduationCap: GraduationCap,
+    BookOpen: BookOpen,
+    Award: Award,
+};
 
 export const Formation = () => {
-    const formations = [
-        {
-            id: 1,
-            periode: '2023-2024',
-            titre: 'Master 2 en Ingénierie Informatique',
-            ecole: 'EMIT Fianarantsoa',
-            icon: <GraduationCap className="w-8 h-8 text-neon-blanc" />
-        },
-        {
-            id: 2,
-            periode: '2021-2022',
-            titre: 'Licence en Informatique',
-            ecole: 'EMIT Fianarantsoa',
-            icon: <GraduationCap className="w-8 h-8 text-neon-blanc" />
-        },
-        {
-            id: 3,
-            periode: '2017-2018',
-            titre: 'Baccalauréat série D',
-            ecole: 'LRR Fianarantsoa',
-            icon: <BookOpen className="w-8 h-8 text-neon-blanc" />
-        }
-    ];
+    const [formations, setFormations] = useState<Formation[]>([]);
+    const [certifications, setCertifications] = useState<Certification[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
-    const certifications = [
-        {
-            id: 1,
-            date: '2024',
-            titre: 'Certificat en Langage Python',
-            organisme: 'HackerRank',
-            icon: <Award className="w-6 h-6 text-neon-green" />
-        },
-        {
-            id: 2,
-            date: '2024',
-            titre: 'Certificat en SQL',
-            organisme: 'HackerRank',
-            icon: <Award className="w-6 h-6 text-neon-green" />
-        },
-        {
-            id: 3,
-            date: '2024',
-            titre: 'Certificat en ReactJs',
-            organisme: 'SkillValue',
-            icon: <Award className="w-6 h-6 text-neon-green" />
-        },
-        {
-            id: 4,
-            date: '2024',
-            titre: 'Certificat en PHP (Laravel)',
-            organisme: 'SkillValue',
-            icon: <Award className="w-6 h-6 text-neon-green" />
-        }
-    ];
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setLoading(true);
+                setError(null);
+
+                const [formationsRes, certificationsRes] = await Promise.all([
+                    fetch('/api/formation'),
+                    fetch('/api/certification')
+                ]);
+
+                if (!formationsRes.ok || !certificationsRes.ok) {
+                    throw new Error('Erreur lors du chargement des données');
+                }
+
+                const formationsData = await formationsRes.json();
+                const certificationsData = await certificationsRes.json();
+
+                setFormations(formationsData);
+                setCertifications(certificationsData);
+            } catch (err) {
+                console.error('Error fetching data:', err);
+                setError('Impossible de charger les données');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    const getIcon = (iconName: string) => {
+        const IconComponent = iconMap[iconName] || GraduationCap;
+        return <IconComponent className="w-8 h-8 text-neon-blanc" />;
+    };
+
+    const getCertificationIcon = (iconName: string) => {
+        const IconComponent = iconMap[iconName] || Award;
+        return <IconComponent className="w-6 h-6 text-neon-green" />;
+    };
+
+    if (loading) {
+        return (
+            <div className="min-h-screen pt-32 px-6 flex items-center justify-center">
+                <motion.div
+                    className="flex flex-col items-center gap-4"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                >
+                    <Loader2 className="w-12 h-12 text-neon-blue animate-spin" />
+                    <p className="text-neon-blue text-xl">Chargement des formations...</p>
+                </motion.div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="min-h-screen pt-32 px-6 flex items-center justify-center">
+                <motion.div
+                    className="glass-panel p-8 text-center"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                >
+                    <p className="text-red-400 text-xl">{error}</p>
+                    <button
+                        onClick={() => window.location.reload()}
+                        className="mt-4 px-6 py-2 bg-neon-blue text-white rounded-lg hover:bg-neon-blue/80 transition-colors"
+                    >
+                        Réessayer
+                    </button>
+                </motion.div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen pt-32 px-6">
@@ -88,27 +141,37 @@ export const Formation = () => {
                             transition={{ delay: 0.3 }}
                         >
                             <h3 className="text-2xl font-military neon-text mb-4">Parcours académique</h3>
-                            <div className="flex flex-col gap-6">
-                                {formations.map((formation, index) => (
-                                    <motion.div
-                                        key={formation.id}
-                                        className="flex items-start gap-4"
-                                        initial={{ opacity: 0, y: 10 }}
-                                        whileInView={{ opacity: 1, y: 0 }}
-                                        viewport={{ once: true }}
-                                        transition={{ delay: 0.4 + index * 0.1 }}
-                                    >
-                                        <div className="bg-dark-gray p-2 rounded-lg">
-                                            {formation.icon}
-                                        </div>
-                                        <div>
-                                            <p className="text-neon-blanc">{formation.periode}</p>
-                                            <h4 className="text-lg font-military">{formation.titre}</h4>
-                                            <p className="text-gray-400">{formation.ecole}</p>
-                                        </div>
-                                    </motion.div>
-                                ))}
-                            </div>
+
+                            {formations.length === 0 ? (
+                                <p className="text-gray-400 text-center py-8">
+                                    Aucune formation pour le moment
+                                </p>
+                            ) : (
+                                <div className="flex flex-col gap-6">
+                                    {formations.map((formation, index) => (
+                                        <motion.div
+                                            key={formation.id}
+                                            className="flex items-start gap-4"
+                                            initial={{ opacity: 0, y: 10 }}
+                                            whileInView={{ opacity: 1, y: 0 }}
+                                            viewport={{ once: true }}
+                                            transition={{ delay: 0.4 + index * 0.1 }}
+                                        >
+                                            <div className="bg-dark-gray p-2 rounded-lg">
+                                                {getIcon(formation.icon)}
+                                            </div>
+                                            <div>
+                                                <p className="text-neon-blanc">{formation.periode}</p>
+                                                <h4 className="text-lg font-military">{formation.titre}</h4>
+                                                <p className="text-gray-400">{formation.ecole}</p>
+                                                {formation.description && (
+                                                    <p className="text-sm text-gray-500 mt-1">{formation.description}</p>
+                                                )}
+                                            </div>
+                                        </motion.div>
+                                    ))}
+                                </div>
+                            )}
                             <div className="scan-line" />
                         </motion.div>
 
@@ -121,24 +184,33 @@ export const Formation = () => {
                             transition={{ delay: 0.3 }}
                         >
                             <h3 className="text-2xl font-military neon-text mb-4">Certifications</h3>
-                            <div className="flex flex-col gap-4">
-                                {certifications.map((certification, index) => (
-                                    <motion.div
-                                        key={certification.id}
-                                        className="flex items-center gap-3 p-3 rounded-md bg-dark-gray/50"
-                                        initial={{ opacity: 0, y: 10 }}
-                                        whileInView={{ opacity: 1, y: 0 }}
-                                        viewport={{ once: true }}
-                                        transition={{ delay: 0.4 + index * 0.1 }}
-                                    >
-                                        {certification.icon}
-                                        <div>
-                                            <h4 className="font-military text-neon-blanc">{certification.titre}</h4>
-                                            <p className="text-sm text-gray-400">{certification.organisme} - {certification.date}</p>
-                                        </div>
-                                    </motion.div>
-                                ))}
-                            </div>
+
+                            {certifications.length === 0 ? (
+                                <p className="text-gray-400 text-center py-8">
+                                    Aucune certification pour le moment
+                                </p>
+                            ) : (
+                                <div className="flex flex-col gap-4">
+                                    {certifications.map((certification, index) => (
+                                        <motion.div
+                                            key={certification.id}
+                                            className="flex items-center gap-3 p-3 rounded-md bg-dark-gray/50"
+                                            initial={{ opacity: 0, y: 10 }}
+                                            whileInView={{ opacity: 1, y: 0 }}
+                                            viewport={{ once: true }}
+                                            transition={{ delay: 0.4 + index * 0.1 }}
+                                        >
+                                            {getCertificationIcon(certification.icon)}
+                                            <div>
+                                                <h4 className="font-military text-neon-blanc">{certification.titre}</h4>
+                                                <p className="text-sm text-gray-400">
+                                                    {certification.organisme} - {certification.date}
+                                                </p>
+                                            </div>
+                                        </motion.div>
+                                    ))}
+                                </div>
+                            )}
                             <div className="scan-line" />
                         </motion.div>
                     </div>

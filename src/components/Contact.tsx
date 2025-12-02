@@ -242,7 +242,7 @@ export const Contact = () => {
                                     <div className="flex items-start gap-3">
                                         <AlertCircle className="w-6 h-6 text-red-400 flex-shrink-0 mt-1" />
                                         <div>
-                                            <p className="text-lg font-military text-red-400 mb-2">Erreur d'envoi</p>
+                                            <p className="text-lg font-military text-red-400 mb-2">Erreur d&#39;envoi</p>
                                             <p className="text-gray-300">{formStatus.message || 'Une erreur est survenue. Veuillez réessayer.'}</p>
                                         </div>
                                     </div>

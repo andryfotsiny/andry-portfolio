@@ -1,6 +1,6 @@
 'use client';
 import { motion } from 'framer-motion';
-import { Terminal, Code2, Cpu, TrendingUp } from 'lucide-react';
+import { Terminal, Code2, Cpu} from 'lucide-react';
 import { MyPhoto } from '@/components/Myphoto';
 import { useEffect, useState } from 'react';
 
@@ -171,7 +171,7 @@ export const Home = () => {
                         >
                           {displayStats.yearsExp}+
                         </motion.div>
-                        <div className="text-sm text-gray-400">Années d'exp</div>
+                        <div className="text-sm text-gray-400">Années d&#39;exp</div>
                       </div>
 
                       <div className="glass-panel p-6 text-center">

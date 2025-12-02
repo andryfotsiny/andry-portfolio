@@ -40,8 +40,12 @@ export default function LoginPage() {
             // Rediriger vers le dashboard
             router.push('/admin/dashboard');
             router.refresh();
-        } catch (err: any) {
-            setError(err.message);
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError('Une erreur inconnue est survenue');
+            }
         } finally {
             setIsLoading(false);
         }
@@ -64,7 +68,7 @@ export default function LoginPage() {
                             Admin Dashboard
                         </CardTitle>
                         <CardDescription className="text-slate-400">
-                            Connectez-vous pour accéder au panneau d'administration
+                            Connectez-vous pour accéder au panneau d&#39;administration
                         </CardDescription>
                     </CardHeader>
                     <CardContent>

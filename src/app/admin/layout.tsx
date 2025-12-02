@@ -1,6 +1,7 @@
 'use client';
 
 import { usePathname, useRouter } from 'next/navigation';
+import Link from "next/link";
 import { useEffect, useState } from 'react';
 import {
     LayoutDashboard,
@@ -11,7 +12,9 @@ import {
     Mail,
     LogOut,
     Shield,
-    Loader2
+    Loader2,
+    Menu,
+    X
 } from 'lucide-react';
 import { Toaster } from '@/components/ui/toaster';
 
@@ -19,16 +22,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const pathname = usePathname();
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(true);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
 
     useEffect(() => {
-        // Ne pas vérifier l'auth sur la page de login
         if (pathname === '/admin/login') {
             setIsLoading(false);
             return;
         }
-
-        // Vérifier l'auth pour les autres pages
         checkAuth();
+    }, [pathname]);
+
+    useEffect(() => {
+        setSidebarOpen(false);
     }, [pathname]);
 
     const checkAuth = async () => {
@@ -38,7 +43,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 router.push('/admin/login');
                 return;
             }
-        } catch (error) {
+        } catch  {
             router.push('/admin/login');
         } finally {
             setIsLoading(false);
@@ -55,12 +60,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         }
     };
 
-    // Page de login : afficher directement
     if (pathname === '/admin/login') {
         return <>{children}</>;
     }
 
-    // Autres pages : vérifier l'auth
     if (isLoading) {
         return (
             <div className="min-h-screen bg-slate-900 flex items-center justify-center">
@@ -80,8 +83,25 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
     return (
         <div className="min-h-screen bg-slate-900">
+
+            {/* Bouton hamburger mobile */}
+            <button
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+                className="md:hidden fixed top-4 left-4 z-50 p-2 bg-slate-800 border border-slate-700 rounded-lg text-white"
+            >
+                {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+
+            {/* Overlay mobile */}
+            {sidebarOpen && (
+                <div
+                    className="md:hidden fixed inset-0 bg-black/50 z-40"
+                    onClick={() => setSidebarOpen(false)}
+                />
+            )}
+
             {/* Sidebar */}
-            <aside className="fixed left-0 top-0 h-full w-64 bg-slate-800 border-r border-slate-700 p-6 z-50">
+            <aside className={`fixed left-0 top-0 h-full w-64 bg-slate-800 border-r border-slate-700 p-6 z-50 transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0`}>
                 <div className="mb-8">
                     <h1 className="text-2xl font-bold text-white flex items-center gap-2">
                         <div className="w-8 h-8 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-lg flex items-center justify-center">
@@ -96,7 +116,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     {menuItems.map((item) => {
                         const isActive = pathname === item.href;
                         return (
-                            <a
+                            <Link
                                 key={item.href}
                                 href={item.href}
                                 className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
@@ -107,7 +127,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                             >
                                 <item.icon className="w-5 h-5" />
                                 <span>{item.label}</span>
-                            </a>
+                            </Link>
                         );
                     })}
                 </nav>
@@ -122,7 +142,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </aside>
 
             {/* Main Content */}
-            <main className="ml-64 p-8">
+            <main className="md:ml-64 p-4 md:p-8 pt-20 md:pt-8">
                 {children}
             </main>
 

@@ -117,7 +117,7 @@ export default function FormationPage() {
             setEditingFormation(null);
             setFormationForm({ periode: '', titre: '', ecole: '', icon: 'GraduationCap', description: '', order: 0 });
             fetchData();
-        } catch (error) {
+        } catch  {
             toast({
                 title: 'Erreur',
                 description: 'Impossible de sauvegarder la formation',
@@ -139,7 +139,7 @@ export default function FormationPage() {
             });
 
             fetchData();
-        } catch (error) {
+        } catch  {
             toast({
                 title: 'Erreur',
                 description: 'Impossible de supprimer la formation',
@@ -187,7 +187,7 @@ export default function FormationPage() {
             setEditingCertification(null);
             setCertificationForm({ date: '', titre: '', organisme: '', icon: 'Award', order: 0 });
             fetchData();
-        } catch (error) {
+        } catch  {
             toast({
                 title: 'Erreur',
                 description: 'Impossible de sauvegarder la certification',
@@ -209,7 +209,7 @@ export default function FormationPage() {
             });
 
             fetchData();
-        } catch (error) {
+        } catch  {
             toast({
                 title: 'Erreur',
                 description: 'Impossible de supprimer la certification',
@@ -329,7 +329,7 @@ export default function FormationPage() {
                                             />
                                         </div>
                                         <div>
-                                            <Label htmlFor="order">Ordre d'affichage</Label>
+                                            <Label htmlFor="order">Ordre d&#39;affichage</Label>
                                             <Input
                                                 id="order"
                                                 type="number"
@@ -451,7 +451,7 @@ export default function FormationPage() {
                                             />
                                         </div>
                                         <div>
-                                            <Label htmlFor="cert-order">Ordre d'affichage</Label>
+                                            <Label htmlFor="cert-order">Ordre d&#39;affichage</Label>
                                             <Input
                                                 id="cert-order"
                                                 type="number"

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Plus, Trash2, Edit, Loader2, GraduationCap, Award } from 'lucide-react';
+import { Plus, Trash2, Edit, Loader2, GraduationCap, Award, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -18,6 +18,7 @@ interface Formation {
     ecole: string;
     icon: string;
     description?: string;
+    link?: string;
     order: number;
 }
 
@@ -27,6 +28,7 @@ interface Certification {
     titre: string;
     organisme: string;
     icon: string;
+    link?: string; // 👈 Nouveau champ
     order: number;
 }
 
@@ -45,6 +47,7 @@ export default function FormationPage() {
         ecole: '',
         icon: 'GraduationCap',
         description: '',
+        link: '',
         order: 0,
     });
 
@@ -56,6 +59,7 @@ export default function FormationPage() {
         titre: '',
         organisme: '',
         icon: 'Award',
+        link: '', // 👈 Nouveau champ
         order: 0,
     });
 
@@ -115,7 +119,7 @@ export default function FormationPage() {
 
             setFormationDialogOpen(false);
             setEditingFormation(null);
-            setFormationForm({ periode: '', titre: '', ecole: '', icon: 'GraduationCap', description: '', order: 0 });
+            setFormationForm({ periode: '', titre: '', ecole: '', icon: 'GraduationCap', description: '', link: '', order: 0 });
             fetchData();
         } catch  {
             toast({
@@ -156,6 +160,7 @@ export default function FormationPage() {
             ecole: formation.ecole,
             icon: formation.icon,
             description: formation.description || '',
+            link: formation.link || '',
             order: formation.order,
         });
         setFormationDialogOpen(true);
@@ -185,7 +190,7 @@ export default function FormationPage() {
 
             setCertificationDialogOpen(false);
             setEditingCertification(null);
-            setCertificationForm({ date: '', titre: '', organisme: '', icon: 'Award', order: 0 });
+            setCertificationForm({ date: '', titre: '', organisme: '', icon: 'Award', link: '', order: 0 });
             fetchData();
         } catch  {
             toast({
@@ -225,6 +230,7 @@ export default function FormationPage() {
             titre: certification.titre,
             organisme: certification.organisme,
             icon: certification.icon,
+            link: certification.link || '', // 👈 Nouveau champ
             order: certification.order,
         });
         setCertificationDialogOpen(true);
@@ -259,7 +265,7 @@ export default function FormationPage() {
                                     <Button
                                         onClick={() => {
                                             setEditingFormation(null);
-                                            setFormationForm({ periode: '', titre: '', ecole: '', icon: 'GraduationCap', description: '', order: 0 });
+                                            setFormationForm({ periode: '', titre: '', ecole: '', icon: 'GraduationCap', description: '', link: '', order: 0 });
                                         }}
                                         className="bg-cyan-600 hover:bg-cyan-700"
                                     >
@@ -267,7 +273,7 @@ export default function FormationPage() {
                                         Ajouter
                                     </Button>
                                 </DialogTrigger>
-                                <DialogContent className="bg-slate-800 border-slate-700 text-white">
+                                <DialogContent className="bg-slate-800 border-slate-700 text-white max-h-[90vh] overflow-y-auto">
                                     <DialogHeader>
                                         <DialogTitle>{editingFormation ? 'Modifier' : 'Ajouter'} une formation</DialogTitle>
                                         <DialogDescription>Remplissez les informations de la formation</DialogDescription>
@@ -302,6 +308,18 @@ export default function FormationPage() {
                                                 onChange={(e) => setFormationForm({ ...formationForm, ecole: e.target.value })}
                                                 className="bg-slate-900 border-slate-700"
                                             />
+                                        </div>
+                                        <div>
+                                            <Label htmlFor="link">Lien (optionnel)</Label>
+                                            <Input
+                                                id="link"
+                                                type="url"
+                                                placeholder="https://exemple.com/certificat"
+                                                value={formationForm.link}
+                                                onChange={(e) => setFormationForm({ ...formationForm, link: e.target.value })}
+                                                className="bg-slate-900 border-slate-700"
+                                            />
+                                            <p className="text-xs text-slate-500 mt-1">URL vers le certificat, diplôme ou page de l'institution</p>
                                         </div>
                                         <div>
                                             <Label htmlFor="icon">Icône</Label>
@@ -358,10 +376,24 @@ export default function FormationPage() {
                                     key={formation.id}
                                     className="flex items-center justify-between p-4 bg-slate-900/50 rounded-lg border border-slate-700"
                                 >
-                                    <div className="flex items-start gap-3">
+                                    <div className="flex items-start gap-3 flex-1">
                                         <GraduationCap className="w-5 h-5 text-cyan-400 mt-1" />
-                                        <div>
-                                            <h4 className="font-medium text-white">{formation.titre}</h4>
+                                        <div className="flex-1">
+                                            <div className="flex items-center gap-2">
+                                                <h4 className="font-medium text-white">{formation.titre}</h4>
+                                                {formation.link && (
+                                                    <a
+                                                        href={formation.link}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="text-cyan-400 hover:text-cyan-300 transition-colors"
+                                                        onClick={(e) => e.stopPropagation()}
+                                                        title="Voir le lien"
+                                                    >
+                                                        <ExternalLink className="w-4 h-4" />
+                                                    </a>
+                                                )}
+                                            </div>
                                             <p className="text-sm text-slate-400">{formation.ecole}</p>
                                             <p className="text-xs text-slate-500">{formation.periode}</p>
                                         </div>
@@ -406,7 +438,7 @@ export default function FormationPage() {
                                     <Button
                                         onClick={() => {
                                             setEditingCertification(null);
-                                            setCertificationForm({ date: '', titre: '', organisme: '', icon: 'Award', order: 0 });
+                                            setCertificationForm({ date: '', titre: '', organisme: '', icon: 'Award', link: '', order: 0 });
                                         }}
                                         className="bg-green-600 hover:bg-green-700"
                                     >
@@ -414,7 +446,7 @@ export default function FormationPage() {
                                         Ajouter
                                     </Button>
                                 </DialogTrigger>
-                                <DialogContent className="bg-slate-800 border-slate-700 text-white">
+                                <DialogContent className="bg-slate-800 border-slate-700 text-white max-h-[90vh] overflow-y-auto">
                                     <DialogHeader>
                                         <DialogTitle>{editingCertification ? 'Modifier' : 'Ajouter'} une certification</DialogTitle>
                                         <DialogDescription>Remplissez les informations de la certification</DialogDescription>
@@ -451,6 +483,18 @@ export default function FormationPage() {
                                             />
                                         </div>
                                         <div>
+                                            <Label htmlFor="cert-link">Lien (optionnel)</Label>
+                                            <Input
+                                                id="cert-link"
+                                                type="url"
+                                                placeholder="https://exemple.com/certificat"
+                                                value={certificationForm.link}
+                                                onChange={(e) => setCertificationForm({ ...certificationForm, link: e.target.value })}
+                                                className="bg-slate-900 border-slate-700"
+                                            />
+                                            <p className="text-xs text-slate-500 mt-1">URL vers le certificat ou badge numérique</p>
+                                        </div>
+                                        <div>
                                             <Label htmlFor="cert-order">Ordre d&#39;affichage</Label>
                                             <Input
                                                 id="cert-order"
@@ -480,10 +524,24 @@ export default function FormationPage() {
                                     key={cert.id}
                                     className="flex items-center justify-between p-4 bg-slate-900/50 rounded-lg border border-slate-700"
                                 >
-                                    <div className="flex items-start gap-3">
+                                    <div className="flex items-start gap-3 flex-1">
                                         <Award className="w-5 h-5 text-green-400 mt-1" />
-                                        <div>
-                                            <h4 className="font-medium text-white">{cert.titre}</h4>
+                                        <div className="flex-1">
+                                            <div className="flex items-center gap-2">
+                                                <h4 className="font-medium text-white">{cert.titre}</h4>
+                                                {cert.link && (
+                                                    <a
+                                                        href={cert.link}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="text-green-400 hover:text-green-300 transition-colors"
+                                                        onClick={(e) => e.stopPropagation()}
+                                                        title="Voir le lien"
+                                                    >
+                                                        <ExternalLink className="w-4 h-4" />
+                                                    </a>
+                                                )}
+                                            </div>
                                             <p className="text-sm text-slate-400">{cert.organisme}</p>
                                             <p className="text-xs text-slate-500">{cert.date}</p>
                                         </div>

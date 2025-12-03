@@ -4,8 +4,9 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql" // ← Change sqlite en postgresql
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL") // ← Optionnel mais recommandé
 }
 
 // Profile principal
@@ -33,12 +34,12 @@ model Stats {
 
 // Catégories de compétences
 model SkillCategory {
-  id          String   @id @default(cuid())
-  name        String
-  icon        String
-  order       Int      @default(0)
-  skills      Skill[]
-  createdAt   DateTime @default(now())
+  id        String   @id @default(cuid())
+  name      String
+  icon      String
+  order     Int      @default(0)
+  skills    Skill[]
+  createdAt DateTime @default(now())
 }
 
 // Compétences techniques
@@ -98,30 +99,32 @@ model Formation {
   ecole       String
   icon        String
   description String?
+  link        String?
   order       Int      @default(0)
   createdAt   DateTime @default(now())
 }
 
 // Certifications
 model Certification {
-  id         String   @id @default(cuid())
-  date       String
-  titre      String
-  organisme  String
-  icon       String
-  order      Int      @default(0)
-  createdAt  DateTime @default(now())
+  id        String   @id @default(cuid())
+  date      String
+  titre     String
+  organisme String
+  icon      String
+  link      String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
 }
 
 // Informations de contact
 model ContactInfo {
-  id       String @id @default(cuid())
-  type     String
-  label    String
-  value    String
-  link     String?
-  icon     String
-  order    Int    @default(0)
+  id    String  @id @default(cuid())
+  type  String
+  label String
+  value String
+  link  String?
+  icon  String
+  order Int     @default(0)
 }
 
 // Messages de contact

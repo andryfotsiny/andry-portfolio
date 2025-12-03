@@ -1,6 +1,6 @@
 'use client';
 import { motion } from 'framer-motion';
-import { GraduationCap, Award, BookOpen, Loader2 } from 'lucide-react';
+import { GraduationCap, Award, BookOpen, Loader2, ExternalLink } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 interface Formation {
@@ -10,6 +10,7 @@ interface Formation {
     ecole: string;
     icon: string;
     description?: string;
+    link?: string;
     order: number;
 }
 
@@ -19,6 +20,7 @@ interface Certification {
     titre: string;
     organisme: string;
     icon: string;
+    link?: string; // 👈 Nouveau champ
     order: number;
 }
 
@@ -160,12 +162,26 @@ export const Formation = () => {
                                             <div className="bg-dark-gray p-2 rounded-lg">
                                                 {getIcon(formation.icon)}
                                             </div>
-                                            <div>
+                                            <div className="flex-1">
                                                 <p className="text-neon-blanc">{formation.periode}</p>
-                                                <h4 className="text-lg font-military">{formation.titre}</h4>
+                                                <div className="flex items-center gap-2 flex-wrap">
+                                                    <h4 className="text-lg font-military text-neon-blanc">{formation.titre}</h4>
+                                                    {formation.link && (
+                                                        <a
+                                                            href={formation.link}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="inline-flex items-center gap-1 text-neon-blue hover:text-neon-blanc transition-colors text-sm"
+                                                            title="Voir le certificat"
+                                                        >
+                                                            <ExternalLink className="w-4 h-4" />
+                                                            <span>Voir le lien</span>
+                                                        </a>
+                                                    )}
+                                                </div>
                                                 <p className="text-gray-400">{formation.ecole}</p>
                                                 {formation.description && (
-                                                    <p className="text-sm text-gray-500 mt-1">{formation.description}</p>
+                                                    <p className="text-sm text-gray-300 mt-1">{formation.description}</p>
                                                 )}
                                             </div>
                                         </motion.div>
@@ -201,8 +217,22 @@ export const Formation = () => {
                                             transition={{ delay: 0.4 + index * 0.1 }}
                                         >
                                             {getCertificationIcon(certification.icon)}
-                                            <div>
-                                                <h4 className="font-military text-neon-blanc">{certification.titre}</h4>
+                                            <div className="flex-1">
+                                                <div className="flex items-center gap-2 flex-wrap">
+                                                    <h4 className="font-military text-neon-blanc">{certification.titre}</h4>
+                                                    {certification.link && (
+                                                        <a
+                                                            href={certification.link}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="inline-flex items-center gap-1 text-neon-green hover:text-neon-blanc transition-colors text-xs"
+                                                            title="Voir le certificat"
+                                                        >
+                                                            <ExternalLink className="w-3 h-3" />
+                                                            <span>Lien</span>
+                                                        </a>
+                                                    )}
+                                                </div>
                                                 <p className="text-sm text-gray-400">
                                                     {certification.organisme} - {certification.date}
                                                 </p>

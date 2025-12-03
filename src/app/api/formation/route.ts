@@ -30,6 +30,7 @@ export async function POST(request: Request) {
                 ecole: data.ecole,
                 icon: data.icon || 'GraduationCap',
                 description: data.description,
+                link: data.link, // 👈 Ajout du link
                 order: data.order || 0,
             }
         });

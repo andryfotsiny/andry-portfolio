@@ -29,6 +29,7 @@ export async function POST(request: Request) {
                 titre: data.titre,
                 organisme: data.organisme,
                 icon: data.icon || 'Award',
+                link: data.link, // 👈 Ajout du link
                 order: data.order || 0,
             }
         });

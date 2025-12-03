@@ -157,9 +157,9 @@ export const Contact = () => {
                                     <div className="p-3 rounded-lg bg-dark-gray text-neon-blanc">
                                         <Mail className="w-6 h-6" />
                                     </div>
-                                    <div>
+                                    <div className="flex-1 min-w-0">
                                         <h4 className="text-lg font-military text-gray-300">Email</h4>
-                                        <a href={`mailto:${displayProfile.email}`} className="text-neon-blanc hover:underline">
+                                        <a href={`mailto:${displayProfile.email}`} className="text-neon-blue hover:text-neon-blanc underline hover:no-underline break-all transition-colors">
                                             {displayProfile.email}
                                         </a>
                                     </div>

@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Shield, ChevronUp } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Shield, ChevronUp, Menu } from 'lucide-react';
 
 const menuItems = [
     { id: 'home', label: 'Home' },
@@ -16,6 +16,7 @@ export const Navigation = () => {
     const [activeItem, setActiveItem] = useState('home');
     const [scrolled, setScrolled] = useState(false);
     const [showScrollToTop, setShowScrollToTop] = useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -54,6 +55,7 @@ export const Navigation = () => {
 
     const scrollToSection = (id: string) => {
         setActiveItem(id);
+        setMobileMenuOpen(false);
         const element = document.getElementById(id);
         if (element) {
             // Cast element to HTMLElement to access offsetTop
@@ -68,7 +70,7 @@ export const Navigation = () => {
     return (
         <>
             <motion.nav
-                className={`fixed top-0 w-full z-50 px-6 py-4 transition-all duration-300 ${
+                className={`fixed top-0 w-full z-50 px-4 md:px-6 py-4 transition-all duration-300 ${
                     scrolled ? 'bg-darker-gray/90 backdrop-blur-md shadow-md' : 'glass-panel'
                 }`}
                 initial={{ y: -100 }}
@@ -76,7 +78,8 @@ export const Navigation = () => {
                 transition={{ duration: 0.5 }}
             >
                 <div className="max-w-7xl mx-auto">
-                    <div className="flex flex-col md:flex-row justify-between items-center">
+                    <div className="flex justify-between items-center">
+                        {/* Logo */}
                         <div className="relative group">
                             <motion.div
                                 className="absolute -inset-1 bg-gradient-to-r from-neon-blanc to-neon-blanc opacity-30 blur-lg group-hover:opacity-50 transition duration-300"
@@ -96,19 +99,20 @@ export const Navigation = () => {
                                 transition={{ duration: 0.5 }}
                             >
                                 <motion.h1
-                                    className="text-2xl font-military neon-text glitch"
+                                    className="text-xl md:text-2xl font-military neon-text glitch"
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
                                     transition={{ duration: 0.8 }}
                                 >
                                     J.M_DEV
-                                    <Shield className="w-4 h-4 text-neon-blanc absolute -top-2 -right-4" />
+                                    <Shield className="w-3 h-3 md:w-4 md:h-4 text-neon-blanc absolute -top-2 -right-4" />
                                 </motion.h1>
                             </motion.div>
                         </div>
 
+                        {/* Desktop Menu */}
                         <motion.div
-                            className="flex flex-wrap justify-center gap-4"
+                            className="hidden md:flex flex-wrap justify-center gap-4"
                             initial={{ y: -20, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ duration: 0.5, delay: 0.2 }}
@@ -133,10 +137,70 @@ export const Navigation = () => {
                                 </motion.button>
                             ))}
                         </motion.div>
+
+                        {/* Mobile: Current Section + Menu Button */}
+                        <div className="flex md:hidden items-center gap-3">
+                            <motion.div
+                                className="glass-panel px-3 py-1.5 rounded-lg"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                            >
+                                <span className="text-sm font-military text-neon-blanc">
+                                    {menuItems.find(item => item.id === activeItem)?.label}
+                                </span>
+                            </motion.div>
+
+                            <motion.button
+                                className="p-2 rounded-lg bg-neon-blanc/10 border border-neon-blanc/20 text-neon-blanc"
+                                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                                whileTap={{ scale: 0.95 }}
+                            >
+                                <Menu size={20} />
+                            </motion.button>
+                        </div>
                     </div>
                 </div>
                 <div className="scan-line" />
             </motion.nav>
+
+            {/* Mobile Menu Dropdown */}
+            <AnimatePresence>
+                {mobileMenuOpen && (
+                    <>
+                        <motion.div
+                            className="fixed inset-0 bg-black/50 z-40 md:hidden"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setMobileMenuOpen(false)}
+                        />
+                        <motion.div
+                            className="fixed top-16 right-4 z-50 md:hidden glass-panel p-4 rounded-lg w-64"
+                            initial={{ opacity: 0, y: -20, scale: 0.95 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                            transition={{ duration: 0.2 }}
+                        >
+                            <div className="flex flex-col gap-2">
+                                {menuItems.map((item) => (
+                                    <motion.button
+                                        key={item.id}
+                                        className={`text-left px-4 py-3 rounded-lg font-military transition-all ${
+                                            activeItem === item.id
+                                                ? 'bg-neon-blanc/20 text-neon-blanc border border-neon-blanc/30'
+                                                : 'hover:bg-white/5 text-gray-300'
+                                        }`}
+                                        onClick={() => scrollToSection(item.id)}
+                                        whileTap={{ scale: 0.98 }}
+                                    >
+                                        {item.label}
+                                    </motion.button>
+                                ))}
+                            </div>
+                        </motion.div>
+                    </>
+                )}
+            </AnimatePresence>
 
             {/* Bouton de retour en haut */}
             <motion.button

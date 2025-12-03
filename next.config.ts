@@ -8,6 +8,16 @@ const nextConfig = {
         // ⚠️ Ignore les erreurs TypeScript (si nécessaire)
         ignoreBuildErrors: true,
     },
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'res.cloudinary.com',
+                port: '',
+                pathname: '/**',
+            },
+        ],
+    },
 }
 
 module.exports = nextConfig

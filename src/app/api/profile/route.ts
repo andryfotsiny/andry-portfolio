@@ -27,9 +27,11 @@ export async function POST(request: Request) {
                 title: data.title,
                 description: data.description,
                 email: data.email,
-                phone: data.phone,
-                location: data.location,
-                photoUrl: data.photoUrl,
+                phone: data.phone || '',
+                location: data.location || '',
+                photoUrl: data.photoUrl || '',
+                githubUrl: data.githubUrl || '',
+                linkedinUrl: data.linkedinUrl || '',
             }
         });
 
@@ -47,7 +49,6 @@ export async function PUT(request: Request) {
     try {
         const data = await request.json();
 
-        // Get the first profile or create if doesn't exist
         const existingProfile = await prisma.profile.findFirst();
 
         if (!existingProfile) {
@@ -64,9 +65,11 @@ export async function PUT(request: Request) {
                 title: data.title,
                 description: data.description,
                 email: data.email,
-                phone: data.phone,
-                location: data.location,
-                photoUrl: data.photoUrl,
+                phone: data.phone || '',
+                location: data.location || '',
+                photoUrl: data.photoUrl || '',
+                githubUrl: data.githubUrl || '',
+                linkedinUrl: data.linkedinUrl || '',
             }
         });
 

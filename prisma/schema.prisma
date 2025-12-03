@@ -4,9 +4,9 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql" // ← Change sqlite en postgresql
+  provider  = "postgresql"
   url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL") // ← Optionnel mais recommandé
+  directUrl = env("DIRECT_URL")
 }
 
 // Profile principal
@@ -19,6 +19,8 @@ model Profile {
   phone       String?
   location    String?
   photoUrl    String?
+  githubUrl   String?
+  linkedinUrl String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

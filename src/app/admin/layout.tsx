@@ -14,7 +14,8 @@ import {
     Shield,
     Loader2,
     Menu,
-    X
+    X,
+    User
 } from 'lucide-react';
 import { Toaster } from '@/components/ui/toaster';
 
@@ -74,6 +75,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
     const menuItems = [
         { icon: LayoutDashboard, label: 'Dashboard', href: '/admin/dashboard' },
+        { icon: User, label: 'Profil', href: '/admin/profile' },
         { icon: GraduationCap, label: 'Formation', href: '/admin/formation' },
         { icon: Briefcase, label: 'Expérience', href: '/admin/experience' },
         { icon: Folder, label: 'Projets', href: '/admin/projects' },

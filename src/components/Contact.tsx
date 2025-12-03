@@ -1,9 +1,18 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Github, Linkedin, Send, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
 
+interface ProfileData {
+    email: string;
+    phone?: string;
+    location?: string;
+    githubUrl?: string;
+    linkedinUrl?: string;
+}
+
 export const Contact = () => {
+    const [profile, setProfile] = useState<ProfileData | null>(null);
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -21,6 +30,31 @@ export const Contact = () => {
         isError: false,
         message: undefined
     });
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                const response = await fetch('/api/profile');
+                if (response.ok) {
+                    const data = await response.json();
+                    setProfile(data);
+                }
+            } catch (error) {
+                console.error('Error fetching profile:', error);
+            }
+        };
+
+        fetchProfile();
+    }, []);
+
+    // Valeurs par défaut si pas de profil
+    const displayProfile = profile || {
+        email: 'Andryfotsiny1410@gmail.com',
+        phone: '+261 34 27 583 01',
+        location: 'Fianarantsoa, Madagascar',
+        githubUrl: 'https://github.com/andryfotsiny',
+        linkedinUrl: 'https://www.linkedin.com/in/jean-michel-andrianantenaina-483056304'
+    };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -54,7 +88,6 @@ export const Contact = () => {
             });
             setFormData({ name: '', email: '', message: '' });
 
-            // Reset après 10 secondes
             setTimeout(() => {
                 setFormStatus({
                     isSubmitting: false,
@@ -72,7 +105,6 @@ export const Contact = () => {
                 message: error.message
             });
 
-            // Reset l'erreur après 5 secondes
             setTimeout(() => {
                 setFormStatus({
                     isSubmitting: false,
@@ -127,83 +159,91 @@ export const Contact = () => {
                                     </div>
                                     <div>
                                         <h4 className="text-lg font-military text-gray-300">Email</h4>
-                                        <a href="mailto:Andryfotsiny1410@gmail.com" className="text-neon-blanc hover:underline">
-                                            Andryfotsiny1410@gmail.com
+                                        <a href={`mailto:${displayProfile.email}`} className="text-neon-blanc hover:underline">
+                                            {displayProfile.email}
                                         </a>
                                     </div>
                                 </motion.div>
 
-                                <motion.div
-                                    className="flex items-center gap-4"
-                                    initial={{ opacity: 0, y: 10 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: 0.5 }}
-                                >
-                                    <div className="p-3 rounded-lg bg-dark-gray text-neon-blanc">
-                                        <Phone className="w-6 h-6" />
-                                    </div>
-                                    <div>
-                                        <h4 className="text-lg font-military text-gray-300">Téléphone</h4>
-                                        <a href="tel:+261342758301" className="text-neon-blanc hover:underline">
-                                            +261 34 27 583 01
-                                        </a>
-                                    </div>
-                                </motion.div>
+                                {displayProfile.phone && (
+                                    <motion.div
+                                        className="flex items-center gap-4"
+                                        initial={{ opacity: 0, y: 10 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: 0.5 }}
+                                    >
+                                        <div className="p-3 rounded-lg bg-dark-gray text-neon-blanc">
+                                            <Phone className="w-6 h-6" />
+                                        </div>
+                                        <div>
+                                            <h4 className="text-lg font-military text-gray-300">Téléphone</h4>
+                                            <a href={`tel:${displayProfile.phone.replace(/\s/g, '')}`} className="text-neon-blanc hover:underline">
+                                                {displayProfile.phone}
+                                            </a>
+                                        </div>
+                                    </motion.div>
+                                )}
 
-                                <motion.div
-                                    className="flex items-center gap-4"
-                                    initial={{ opacity: 0, y: 10 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: 0.6 }}
-                                >
-                                    <div className="p-3 rounded-lg bg-dark-gray text-neon-blanc">
-                                        <MapPin className="w-6 h-6" />
-                                    </div>
-                                    <div>
-                                        <h4 className="text-lg font-military text-gray-300">Localisation</h4>
-                                        <p className="text-neon-blanc">
-                                            Fianarantsoa, Madagascar
-                                        </p>
-                                    </div>
-                                </motion.div>
+                                {displayProfile.location && (
+                                    <motion.div
+                                        className="flex items-center gap-4"
+                                        initial={{ opacity: 0, y: 10 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: 0.6 }}
+                                    >
+                                        <div className="p-3 rounded-lg bg-dark-gray text-neon-blanc">
+                                            <MapPin className="w-6 h-6" />
+                                        </div>
+                                        <div>
+                                            <h4 className="text-lg font-military text-gray-300">Localisation</h4>
+                                            <p className="text-neon-blanc">
+                                                {displayProfile.location}
+                                            </p>
+                                        </div>
+                                    </motion.div>
+                                )}
 
-                                <motion.div
-                                    className="flex items-center gap-4"
-                                    initial={{ opacity: 0, y: 10 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: 0.7 }}
-                                >
-                                    <div className="p-3 rounded-lg bg-dark-gray text-neon-blanc">
-                                        <Github className="w-6 h-6" />
-                                    </div>
-                                    <div>
-                                        <h4 className="text-lg font-military text-gray-300">GitHub</h4>
-                                        <a href="https://github.com/andryfotsiny" target="_blank" rel="noopener noreferrer" className="text-neon-blanc hover:underline">
-                                            github.com/andryfotsiny
-                                        </a>
-                                    </div>
-                                </motion.div>
+                                {displayProfile.githubUrl && (
+                                    <motion.div
+                                        className="flex items-center gap-4"
+                                        initial={{ opacity: 0, y: 10 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: 0.7 }}
+                                    >
+                                        <div className="p-3 rounded-lg bg-dark-gray text-neon-blanc">
+                                            <Github className="w-6 h-6" />
+                                        </div>
+                                        <div>
+                                            <h4 className="text-lg font-military text-gray-300">GitHub</h4>
+                                            <a href={displayProfile.githubUrl} target="_blank" rel="noopener noreferrer" className="text-neon-blanc hover:underline truncate block">
+                                                {displayProfile.githubUrl}
+                                            </a>
+                                        </div>
+                                    </motion.div>
+                                )}
 
-                                <motion.div
-                                    className="flex items-center gap-4"
-                                    initial={{ opacity: 0, y: 10 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: 0.8 }}
-                                >
-                                    <div className="p-3 rounded-lg bg-dark-gray text-neon-blanc">
-                                        <Linkedin className="w-6 h-6" />
-                                    </div>
-                                    <div>
-                                        <h4 className="text-lg font-military text-gray-300">LinkedIn</h4>
-                                        <a href="https://www.linkedin.com/in/jean-michel-andrianantenaina-483056304" target="_blank" rel="noopener noreferrer" className="text-neon-blanc hover:underline">
-                                            linkedin.com/jean-michel
-                                        </a>
-                                    </div>
-                                </motion.div>
+                                {displayProfile.linkedinUrl && (
+                                    <motion.div
+                                        className="flex items-center gap-4"
+                                        initial={{ opacity: 0, y: 10 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: 0.8 }}
+                                    >
+                                        <div className="p-3 rounded-lg bg-dark-gray text-neon-blanc">
+                                            <Linkedin className="w-6 h-6" />
+                                        </div>
+                                        <div>
+                                            <h4 className="text-lg font-military text-gray-300">LinkedIn</h4>
+                                            <a href={displayProfile.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-neon-blanc hover:underline truncate block">
+                                                {displayProfile.linkedinUrl}
+                                            </a>
+                                        </div>
+                                    </motion.div>
+                                )}
                             </div>
                         </motion.div>
 

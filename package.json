@@ -7,11 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "postinstall": "prisma generate",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
     "db:seed": "tsx prisma/seed.ts",
-    "db:reset": "rm -f prisma/dev.db && prisma db push && tsx prisma/seed.ts"
+    "db:reset": "npx prisma db push --force-reset && npm run db:seed"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

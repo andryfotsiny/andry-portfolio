@@ -299,7 +299,6 @@ export const getUserConfirmationTemplate = (name: string) => {
           <div class="footer-title">Jean Michel Andrianantenaina</div>
           <div class="footer-text">
             Développeur Web Full-stack<br>
-            Master 2 en Ingénierie Informatique
           </div>
           <div class="social-links">
             <a href="https://github.com/andryfotsiny" class="social-link">GitHub</a>

@@ -2,7 +2,6 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import defaultPhoto from '../../public/photo.png';
 
 interface MyPhotoProps {
   photoUrl?: string;
@@ -10,6 +9,7 @@ interface MyPhotoProps {
 
 export const MyPhoto = ({ photoUrl }: MyPhotoProps) => {
   const [scanning, setScanning] = useState(true);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -18,9 +18,6 @@ export const MyPhoto = ({ photoUrl }: MyPhotoProps) => {
 
     return () => clearTimeout(timer);
   }, []);
-
-  // Utiliser la photo de la base de données ou l'image par défaut
-  const displayPhoto = photoUrl || defaultPhoto;
 
   return (
       <motion.div
@@ -31,16 +28,38 @@ export const MyPhoto = ({ photoUrl }: MyPhotoProps) => {
       >
         <div className="absolute inset-0 glass-panel overflow-hidden">
           <div className="relative w-full h-full p-3">
-            <Image
-                src={displayPhoto}
-                alt="Profile Photo"
-                fill
-                className="rounded-lg object-cover"
-            />
+            {photoUrl ? (
+                <>
+                  <Image
+                      src={photoUrl}
+                      alt="Profile Photo"
+                      fill
+                      className="rounded-lg object-cover"
+                      onLoad={() => setImageLoaded(true)}
+                  />
 
-            <div className="absolute inset-0 rounded-lg"
-                 style={{
-                   backgroundImage: `
+                  {!imageLoaded && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-dark-bg/80 rounded-lg">
+                        <motion.div
+                            className="text-neon-blue text-sm"
+                            animate={{ opacity: [0.5, 1, 0.5] }}
+                            transition={{ duration: 1.5, repeat: Infinity }}
+                        >
+                          Chargement de la photo...
+                        </motion.div>
+                      </div>
+                  )}
+                </>
+            ) : (
+                <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-dark-bg/50">
+                  <p className="text-gray-500 text-sm">Aucune photo</p>
+                </div>
+            )}
+
+            <div
+                className="absolute inset-0 rounded-lg"
+                style={{
+                  backgroundImage: `
                 linear-gradient(0deg, transparent 24%, 
                 ${scanning ? 'rgba(0, 243, 255, 0.03)' : 'rgba(0, 243, 255, 0.01)'} 25%, 
                 rgba(0, 243, 255, 0.01) 26%, transparent 27%, transparent 74%, 
@@ -51,11 +70,12 @@ export const MyPhoto = ({ photoUrl }: MyPhotoProps) => {
                 rgba(0, 243, 255, 0.01) 26%, transparent 27%, transparent 74%, 
                 ${scanning ? 'rgba(0, 243, 255, 0.03)' : 'rgba(0, 243, 255, 0.01)'} 75%, 
                 rgba(0, 243, 255, 0.01) 76%, transparent 77%, transparent)`,
-                   backgroundSize: '30px 30px'
-                 }}
+                  backgroundSize: '30px 30px'
+                }}
             />
           </div>
 
+          {/* Corner decorations */}
           <div className="absolute inset-0">
             <motion.div
                 className="absolute top-0 left-0 w-12 h-12"
@@ -98,6 +118,7 @@ export const MyPhoto = ({ photoUrl }: MyPhotoProps) => {
             </motion.div>
           </div>
 
+          {/* Scanning effect */}
           {scanning && (
               <motion.div
                   className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent via-neon-blue/40 to-transparent"
@@ -110,6 +131,7 @@ export const MyPhoto = ({ photoUrl }: MyPhotoProps) => {
               />
           )}
 
+          {/* Side indicators */}
           <div className="absolute -right-3 top-0 h-full flex flex-col justify-between py-4">
             <motion.div
                 className="space-y-2"
@@ -123,6 +145,7 @@ export const MyPhoto = ({ photoUrl }: MyPhotoProps) => {
             </motion.div>
           </div>
 
+          {/* Bottom info bar */}
           <motion.div
               className="absolute -bottom-8 left-0 w-full"
               initial={{ opacity: 0, y: 10 }}

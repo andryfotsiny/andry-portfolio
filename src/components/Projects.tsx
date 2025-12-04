@@ -55,7 +55,7 @@ export const Projects = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen pt-32 px-6 flex items-center justify-center">
+            <div className="min-h-screen px-6 flex items-center justify-center">
                 <motion.div
                     className="flex flex-col items-center gap-4"
                     initial={{ opacity: 0 }}

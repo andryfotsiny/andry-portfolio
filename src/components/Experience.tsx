@@ -90,7 +90,7 @@ export const Experience = () => {
     }
 
     return (
-        <div className="min-h-screen pt-32 px-6">
+        <div className="min-h-screen  px-6">
             <div className="max-w-7xl mx-auto">
                 <motion.div
                     className="glass-panel p-8"

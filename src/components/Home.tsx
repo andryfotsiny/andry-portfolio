@@ -103,7 +103,7 @@ export const Home = () => {
               ) : (
                   <>
                     <motion.h2
-                        className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-military text-center glitch px-4"
+                        className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-military text-center text-neon-blanc px-4"
                         initial={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: 0.4 }}

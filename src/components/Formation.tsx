@@ -20,7 +20,7 @@ interface Certification {
     titre: string;
     organisme: string;
     icon: string;
-    link?: string; // 👈 Nouveau champ
+    link?: string;
     order: number;
 }
 
@@ -164,24 +164,25 @@ export const Formation = () => {
                                             </div>
                                             <div className="flex-1">
                                                 <p className="text-neon-blanc">{formation.periode}</p>
-                                                <div className="flex items-center gap-2 flex-wrap">
-                                                    <h4 className="text-lg font-military text-neon-blanc">{formation.titre}</h4>
-                                                    {formation.link && (
+                                                <h4 className="text-lg font-military text-neon-blanc">{formation.titre}</h4>
+                                                <p className="text-gray-400">{formation.ecole}</p>
+                                                {formation.description && (
+                                                    <p className="text-sm text-gray-300 mt-1">{formation.description}</p>
+                                                )}
+
+                                                {/* Lien affiché comme dans Projects */}
+                                                {formation.link && (
+                                                    <div className="mt-3 pt-3 border-t border-neon-blanc/10">
                                                         <a
                                                             href={formation.link}
                                                             target="_blank"
                                                             rel="noopener noreferrer"
-                                                            className="inline-flex items-center gap-1 text-neon-blue hover:text-neon-blanc transition-colors text-sm"
-                                                            title="Voir le certificat"
+                                                            className="flex items-center gap-2 text-sm text-neon-blue hover:text-neon-green transition-colors group"
                                                         >
-                                                            <ExternalLink className="w-4 h-4" />
-                                                            <span>Voir le lien</span>
+                                                            <ExternalLink className="w-4 h-4 flex-shrink-0" />
+                                                            <span className="truncate group-hover:underline">{formation.link}</span>
                                                         </a>
-                                                    )}
-                                                </div>
-                                                <p className="text-gray-400">{formation.ecole}</p>
-                                                {formation.description && (
-                                                    <p className="text-sm text-gray-300 mt-1">{formation.description}</p>
+                                                    </div>
                                                 )}
                                             </div>
                                         </motion.div>
@@ -218,24 +219,25 @@ export const Formation = () => {
                                         >
                                             {getCertificationIcon(certification.icon)}
                                             <div className="flex-1">
-                                                <div className="flex items-center gap-2 flex-wrap">
-                                                    <h4 className="font-military text-neon-blanc">{certification.titre}</h4>
-                                                    {certification.link && (
+                                                <h4 className="font-military text-neon-blanc">{certification.titre}</h4>
+                                                <p className="text-sm text-gray-400">
+                                                    {certification.organisme} - {certification.date}
+                                                </p>
+
+                                                {/* Lien affiché comme dans Projects */}
+                                                {certification.link && (
+                                                    <div className="mt-2 pt-2 border-t border-neon-green/10">
                                                         <a
                                                             href={certification.link}
                                                             target="_blank"
                                                             rel="noopener noreferrer"
-                                                            className="inline-flex items-center gap-1 text-neon-green hover:text-neon-blanc transition-colors text-xs"
-                                                            title="Voir le certificat"
+                                                            className="flex items-center gap-2 text-xs text-neon-green hover:text-neon-blanc transition-colors group"
                                                         >
-                                                            <ExternalLink className="w-3 h-3" />
-                                                            <span>Lien</span>
+                                                            <ExternalLink className="w-3 h-3 flex-shrink-0" />
+                                                            <span className="truncate group-hover:underline">{certification.link}</span>
                                                         </a>
-                                                    )}
-                                                </div>
-                                                <p className="text-sm text-gray-400">
-                                                    {certification.organisme} - {certification.date}
-                                                </p>
+                                                    </div>
+                                                )}
                                             </div>
                                         </motion.div>
                                     ))}

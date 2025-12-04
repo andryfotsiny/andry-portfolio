@@ -266,7 +266,7 @@ export default function ExperiencePage() {
                     <div className="flex items-center gap-2">
                       <h4 className="font-medium text-white">{exp.poste}</h4>
                       {exp.current && (
-                        <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full">
+                        <span className="text-xs bg-blue-500/20 text-neon-blue px-2 py-0.5 rounded-full">
                           En cours
                         </span>
                       )}

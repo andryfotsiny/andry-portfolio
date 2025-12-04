@@ -105,7 +105,7 @@ export const Projects = () => {
                         viewport={{ once: true }}
                         transition={{ delay: 0.2 }}
                     >
-                        Projets Personnels
+                        Projets
                     </motion.h2>
 
                     {projects.length === 0 ? (

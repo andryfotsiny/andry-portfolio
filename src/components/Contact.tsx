@@ -178,7 +178,7 @@ export const Contact = () => {
                                         </div>
                                         <div>
                                             <h4 className="text-lg font-military text-gray-300">Téléphone</h4>
-                                            <a href={`tel:${displayProfile.phone.replace(/\s/g, '')}`} className="text-neon-blanc hover:underline">
+                                            <a href={`tel:${displayProfile.phone.replace(/\s/g, '')}`} className="text-neon-blue hover:underline">
                                                 {displayProfile.phone}
                                             </a>
                                         </div>
@@ -218,7 +218,7 @@ export const Contact = () => {
                                         </div>
                                         <div>
                                             <h4 className="text-lg font-military text-gray-300">GitHub</h4>
-                                            <a href={displayProfile.githubUrl} target="_blank" rel="noopener noreferrer" className="text-neon-blanc hover:underline truncate block">
+                                            <a href={displayProfile.githubUrl} target="_blank" rel="noopener noreferrer" className="text-neon-blue hover:underline truncate block">
                                                 {displayProfile.githubUrl}
                                             </a>
                                         </div>
@@ -238,7 +238,7 @@ export const Contact = () => {
                                         </div>
                                         <div>
                                             <h4 className="text-lg font-military text-gray-300">LinkedIn</h4>
-                                            <a href={displayProfile.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-neon-blanc hover:underline truncate block">
+                                            <a href={displayProfile.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-neon-blue hover:underline truncate block">
                                                 {displayProfile.linkedinUrl}
                                             </a>
                                         </div>

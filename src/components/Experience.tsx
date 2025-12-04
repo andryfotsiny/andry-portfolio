@@ -155,7 +155,7 @@ export const Experience = () => {
                                                     <Calendar className="w-4 h-4 text-gray-400" />
                                                     <span className="text-gray-400">{exp.periode}</span>
                                                     {exp.current && (
-                                                        <span className="ml-2 px-2 py-1 text-xs bg-neon-green/20 text-neon-green rounded-full">
+                                                        <span className="ml-2 px-2 py-1 text-xs bg-neon-green/20 text-neon-blue rounded-full">
                               En cours
                             </span>
                                                     )}

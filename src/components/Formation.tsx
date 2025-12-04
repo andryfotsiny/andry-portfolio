@@ -75,7 +75,7 @@ export const Formation = () => {
 
     const getCertificationIcon = (iconName: string) => {
         const IconComponent = iconMap[iconName] || Award;
-        return <IconComponent className="w-6 h-6 text-neon-green" />;
+        return <IconComponent className="w-6 h-6 text-neon-blue" />;
     };
 
     if (loading) {
@@ -177,7 +177,7 @@ export const Formation = () => {
                                                             href={formation.link}
                                                             target="_blank"
                                                             rel="noopener noreferrer"
-                                                            className="flex items-center gap-2 text-sm text-neon-blue hover:text-neon-green transition-colors group"
+                                                            className="flex items-center gap-2 text-sm text-neon-blue hover:text-neon-blue transition-colors group"
                                                         >
                                                             <ExternalLink className="w-4 h-4 flex-shrink-0" />
                                                             <span className="truncate group-hover:underline">{formation.link}</span>
@@ -231,7 +231,7 @@ export const Formation = () => {
                                                             href={certification.link}
                                                             target="_blank"
                                                             rel="noopener noreferrer"
-                                                            className="flex items-center gap-2 text-xs text-neon-green hover:text-neon-blanc transition-colors group"
+                                                            className="flex items-center gap-2 text-xs text-neon-blue hover:text-neon-blanc transition-colors group"
                                                         >
                                                             <ExternalLink className="w-3 h-3 flex-shrink-0" />
                                                             <span className="truncate group-hover:underline">{certification.link}</span>

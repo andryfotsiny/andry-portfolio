@@ -136,7 +136,7 @@ export const Home = () => {
                         transition={{ delay: 0.7 }}
                     >
                       <div className="flex flex-col items-center">
-                        <Code2 className="w-6 h-6 md:w-8 md:h-8 text-neon-green mb-2" />
+                        <Code2 className="w-6 h-6 md:w-8 md:h-8 text-neon-blue mb-2" />
                         <p className="text-xs md:text-sm text-gray-400">Full Stack</p>
                       </div>
                       <div className="flex flex-col items-center">
@@ -154,7 +154,7 @@ export const Home = () => {
                     >
                       <div className="glass-panel p-3 sm:p-4 md:p-6 text-center">
                         <motion.div
-                            className="text-2xl sm:text-3xl md:text-4xl font-bold text-neon-green mb-1 md:mb-2"
+                            className="text-2xl sm:text-3xl md:text-4xl font-bold text-neon-blue mb-1 md:mb-2"
                             initial={{ scale: 0 }}
                             animate={{ scale: 1 }}
                             transition={{ delay: 1, type: "spring" }}
@@ -173,7 +173,7 @@ export const Home = () => {
                         >
                           {displayStats.yearsExp}+
                         </motion.div>
-                        <div className="text-xs sm:text-sm text-gray-400">Années d&#39;exp</div>
+                        <div className="text-xs sm:text-sm text-gray-400">Années d&#39;expérience</div>
                       </div>
 
                       <div className="glass-panel p-3 sm:p-4 md:p-6 text-center">

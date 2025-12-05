@@ -104,7 +104,7 @@ export const Navigation = () => {
                                     animate={{ opacity: 1 }}
                                     transition={{ duration: 0.8 }}
                                 >
-                                    J.M_DEV
+                                    PI_DEV
                                     <Shield className="w-3 h-3 md:w-4 md:h-4 text-neon-blanc absolute -top-2 -right-4" />
                                 </motion.h1>
                             </motion.div>

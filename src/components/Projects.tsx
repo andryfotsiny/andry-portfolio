@@ -139,17 +139,17 @@ export const Projects = () => {
                                         </div>
                                     )}
 
-                                    {/* Image du projet */}
-                                    {project.imageUrl && (
-                                        <div className="relative h-48 overflow-hidden">
-                                            <img
-                                                src={project.imageUrl}
-                                                alt={project.titre}
-                                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                            />
-                                            <div className="absolute inset-0 bg-gradient-to-t from-dark-gray via-dark-gray/50 to-transparent"></div>
-                                        </div>
-                                    )}
+                                    {/*/!* Image du projet *!/*/}
+                                    {/*{project.imageUrl && (*/}
+                                    {/*    <div className="relative h-48 overflow-hidden">*/}
+                                    {/*        <img*/}
+                                    {/*            src={project.imageUrl}*/}
+                                    {/*            alt={project.titre}*/}
+                                    {/*            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"*/}
+                                    {/*        />*/}
+                                    {/*        <div className="absolute inset-0 bg-gradient-to-t from-dark-gray via-dark-gray/50 to-transparent"></div>*/}
+                                    {/*    </div>*/}
+                                    {/*)}*/}
 
                                     {/* Informations du projet */}
                                     <div className="p-6">

@@ -2,8 +2,8 @@ name: Keep Supabase Alive
 
 on:
   schedule:
-    - cron: "0 8 */3 * *"  # toutes les 3 jours à 8h UTC
-  workflow_dispatch:         # permet de lancer manuellement
+    - cron: "0 8 */3 * *"
+  workflow_dispatch:
 
 jobs:
   ping:
@@ -11,5 +11,5 @@ jobs:
     steps:
       - name: Ping DB via API
         run: |
-          curl -f https://andry-portfolio.vercel.app/api/keepalive \
+          curl -f https://andry-portfolio-21qa5ewsd-andrys-projects-0057aa16.vercel.app/api/keepalive \
             || echo "Ping failed"
